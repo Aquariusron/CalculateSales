@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class CalculateSales {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		if(args.length != 1){
 			return;
 		}
@@ -40,8 +40,8 @@ public class CalculateSales {
 					System.out.println("支店定義ファイルのフォーマットが不正です");
 					return;
 				}
-			branch.put(code[0], code[1]);
-			branchSales.put(code[0], (long)0);
+				branch.put(code[0], code[1]);
+				branchSales.put(code[0], (long)0);
 			}
 
 		} catch(FileNotFoundException e) {
@@ -195,9 +195,11 @@ public class CalculateSales {
 			}
 	    });
 
-	    FileWriter fwBranchtotal = new FileWriter( new File (args[0], "branch.out"));
-		BufferedWriter bwBranchtotal = new BufferedWriter(fwBranchtotal);
+
+		BufferedWriter bwBranchtotal = null;
 	    try{
+	    	FileWriter fwBranchtotal = new FileWriter( new File (args[0], "branch.out"));
+	    	bwBranchtotal = new BufferedWriter(fwBranchtotal);
 			dir.createNewFile();
 		    for(Map.Entry<String,Long> e : compareBranch ) {
 				bwBranchtotal.write(e.getKey() + "," + branch.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
@@ -210,7 +212,7 @@ public class CalculateSales {
 			return;
 	    } finally {
 	    	try {
-	    		if(br != null) {
+	    		if(bwBranchtotal != null) {
 	    			bwBranchtotal.close();
 	    		}
 	    	} catch(IOException e) {
@@ -219,10 +221,10 @@ public class CalculateSales {
 
 	    }
 
-
-	    FileWriter fwCommodity = new FileWriter( new File (args[0], "commodity.out"));
-		BufferedWriter bwCommodity = new BufferedWriter(fwCommodity);
+		BufferedWriter bwCommodity = null;
 	    try{
+	    	FileWriter fwCommodity = new FileWriter( new File (args[0], "commodity.out"));
+	    	bwCommodity = new BufferedWriter(fwCommodity);
 			dir.createNewFile();
 			for(Map.Entry<String,Long> e : compareCommodity ) {
 				bwCommodity.write(e.getKey() + "," + commodity.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
@@ -235,7 +237,7 @@ public class CalculateSales {
 			return;
 	    } finally {
 	    	try {
-	    		if(br != null) {
+	    		if(bwCommodity != null) {
 	    			bwCommodity.close();
 	    		}
 	    	} catch(IOException e) {
