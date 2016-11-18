@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+
 public class CalculateSales {
 	public static void main(String[] args) {
 		if(args.length != 1){
+			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
 		HashMap<String, String> branch = new HashMap<String, String>();
@@ -102,16 +104,18 @@ public class CalculateSales {
 		if(files != null) {
 			for(File f : files) {
 				if(f.getName().matches("^\\d{8}.rcd$")) {
-					chooseRcd.add(f.getName());
+					if (f.isFile()){
+						chooseRcd.add(f.getName());
+					}
 				}
 			}
 		}
 
-		int chainNumbercheck = 0;
+		long chainNumbercheck = 0;
 		for(int i = 0; i < chooseRcd.size(); i++) {
-			int x = Integer.parseInt(chooseRcd.get(i).split("\\.")[0]);
+			long x = Long.parseLong(chooseRcd.get(i).split("\\.")[0]);
 			if(x - chainNumbercheck != 1) {
-				System.out.println("売り上げファイルが連番になっていません");
+				System.out.println("売上ファイルが連番になっていません");
 				return;
 			}
 			chainNumbercheck = x;
@@ -142,28 +146,35 @@ public class CalculateSales {
 					}
 				} catch(IOException e) {
 					System.out.println("予期せぬエラーが発生しました");
+					return;
 				}
 			}
+
 			if(rcdData.size() != 3) {
-				System.out.println(chooseRcd.get(0)+"のフォーマットが不正です");
+				System.out.println(chooseRcd.get(i)+"のフォーマットが不正です");
 				return;
 			}
 			if(!branchSales.containsKey(rcdData.get(0))) {
-				System.out.println(chooseRcd.get(0)+"の支店コードが不正です");
+				System.out.println(chooseRcd.get(i)+"の支店コードが不正です");
 				return;
-			}
+				}
 			if(!commoditySales.containsKey(rcdData.get(1))) {
-				System.out.println(chooseRcd.get(1)+"の商品コードが不正です");
+				System.out.println(chooseRcd.get(i)+"の商品コードが不正です");
 				return;
 			}
-
 
 			long rcdValue;
 			long branchValue;
 			long branchTotal;
 			long commodityValue;
 			long commodityTotal;
-			rcdValue = Integer.parseInt(rcdData.get(2));
+
+			if(!rcdData.get(2).matches("[0-9 A-Z]")) {
+				rcdValue = Long.parseLong(rcdData.get(2));
+			} else {
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
 			branchValue = branchSales.get(rcdData.get(0));
 			branchTotal = branchValue + rcdValue;
 			commodityValue = commoditySales.get(rcdData.get(1));
@@ -191,7 +202,6 @@ public class CalculateSales {
 			}
 	    });
 
-	    // test
 		BufferedWriter bwBranchtotal = null;
 	    try{
 	    	FileWriter fwBranchtotal = new FileWriter( new File (args[0], "branch.out"));
@@ -213,6 +223,7 @@ public class CalculateSales {
 	    		}
 	    	} catch(IOException e) {
 	    		System.out.println("予期せぬエラーが発生しました");
+	    		return;
 	    	}
 
 	    }
@@ -238,6 +249,7 @@ public class CalculateSales {
 	    		}
 	    	} catch(IOException e) {
 	    		System.out.println("予期せぬエラーが発生しました");
+	    		return;
 	    	}
 
 	    }
