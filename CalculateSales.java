@@ -113,9 +113,9 @@ public class CalculateSales {
 
 		long chainNumbercheck = 0;
 		for(int i = 0; i < chooseRcd.size(); i++) {
-			long x = Long.parseLong(chooseRcd.get(i).split("\\.")[0]);
+			int x = Integer.parseInt(chooseRcd.get(i).split("\\.")[0]);
 			if(x - chainNumbercheck != 1) {
-				System.out.println("売上ファイルが連番になっていません");
+				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
 			chainNumbercheck = x;
@@ -129,10 +129,12 @@ public class CalculateSales {
 			try {
 				fr = new FileReader(f);
 				br = new BufferedReader(fr);
-				String line = "";
+				String line = null;
 				while((line = br.readLine()) != null) {
 					rcdData.add(line);
+
 				}
+
 			} catch (FileNotFoundException e) {
 				System.out.println("予期せぬエラーが発生しました");
 				return;
@@ -162,23 +164,16 @@ public class CalculateSales {
 				System.out.println(chooseRcd.get(i)+"の商品コードが不正です");
 				return;
 			}
-
-			long rcdValue;
-			long branchValue;
-			long branchTotal;
-			long commodityValue;
-			long commodityTotal;
-
-			if(!rcdData.get(2).matches("[0-9 A-Z]")) {
-				rcdValue = Long.parseLong(rcdData.get(2));
-			} else {
+			if(!rcdData.get(2).matches("[0-9]+")){
 				System.out.println("予期せぬエラーが発生しました");
 				return;
 			}
-			branchValue = branchSales.get(rcdData.get(0));
-			branchTotal = branchValue + rcdValue;
-			commodityValue = commoditySales.get(rcdData.get(1));
-			commodityTotal = commodityValue + rcdValue;
+
+			long rcdValue = Long.parseLong(rcdData.get(2));
+			long branchValue = branchSales.get(rcdData.get(0));
+			long branchTotal = branchValue + rcdValue;;
+			long commodityValue = commoditySales.get(rcdData.get(1));
+			long commodityTotal = commodityValue + rcdValue;
 
 			if(branchTotal < 9999999999L && commodityTotal < 9999999999L) {
 				branchSales.put(rcdData.get(0), branchTotal);
