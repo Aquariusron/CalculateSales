@@ -35,7 +35,6 @@ public class CalculateSales {
 					System.out.println("支店定義ファイルのフォーマットが不正です");
 					return;
 				}
-
 				if(!code[0].matches("^\\d{3}")) {
 					System.out.println("支店定義ファイルのフォーマットが不正です");
 					return;
@@ -73,7 +72,7 @@ public class CalculateSales {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
 				}
-				if(code[0].matches("[0-9 A-Z]{8}")) {
+				if(!code[0].matches("[0-9 A-Z]{8}")) {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
 				}
@@ -109,14 +108,14 @@ public class CalculateSales {
 		}
 
 		int chainNumbercheck = 0;
-			for(int i = 0; i < chooseRcd.size(); i++) {
-				int x = Integer.parseInt(chooseRcd.get(i).split("\\.")[0]);
-				if(x - chainNumbercheck != 1) {
-					System.out.println("売り上げファイルが連番になっていません");
-					return;
-				}
-				chainNumbercheck = x;
+		for(int i = 0; i < chooseRcd.size(); i++) {
+			int x = Integer.parseInt(chooseRcd.get(i).split("\\.")[0]);
+			if(x - chainNumbercheck != 1) {
+				System.out.println("売り上げファイルが連番になっていません");
+				return;
 			}
+			chainNumbercheck = x;
+		}
 
 		for(int i = 0; i < chooseRcd.size(); i++) {
 			File f = new File(args[0], chooseRcd.get(i));
@@ -145,17 +144,16 @@ public class CalculateSales {
 					System.out.println("予期せぬエラーが発生しました");
 				}
 			}
-
 			if(rcdData.size() != 3) {
-				System.out.println("＜"+chooseRcd.get(0)+"＞のフォーマットが不正です");
+				System.out.println(chooseRcd.get(0)+"のフォーマットが不正です");
 				return;
 			}
 			if(!branchSales.containsKey(rcdData.get(0))) {
-				System.out.println("＜"+branchSales.get(0)+"＞の支店コードが不正です");
+				System.out.println(chooseRcd.get(0)+"の支店コードが不正です");
 				return;
 			}
 			if(!commoditySales.containsKey(rcdData.get(1))) {
-				System.out.println("＜"+commoditySales.get(1)+"＞の商品コードが不正です");
+				System.out.println(chooseRcd.get(1)+"の商品コードが不正です");
 				return;
 			}
 
@@ -180,15 +178,13 @@ public class CalculateSales {
 			}
 		}
 
-		List<Map.Entry<String,Long>> compareBranch
-		= new ArrayList<Map.Entry<String,Long>>(branchSales.entrySet());
+		List<Map.Entry<String,Long>> compareBranch = new ArrayList<Map.Entry<String,Long>>(branchSales.entrySet());
 	    Collections.sort(compareBranch, new Comparator<Map.Entry<String,Long>>() {
 		    public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
 		    	return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
 			}
 	    });
-	    List<Map.Entry<String,Long>> compareCommodity
-		= new ArrayList<Map.Entry<String,Long>>(commoditySales.entrySet());
+	    List<Map.Entry<String,Long>> compareCommodity = new ArrayList<Map.Entry<String,Long>>(commoditySales.entrySet());
 	    Collections.sort(compareCommodity, new Comparator<Map.Entry<String,Long>>() {
 		    public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
 		    	return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
