@@ -74,7 +74,7 @@ public class CalculateSales {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
 				}
-				if(!code[0].matches("[0-9 A-Z]{8}")) {
+				if(!code[0].matches("[0-9 A-Z  a-z]{8}")) {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
 				}
@@ -132,7 +132,6 @@ public class CalculateSales {
 				String line = null;
 				while((line = br.readLine()) != null) {
 					rcdData.add(line);
-
 				}
 
 			} catch (FileNotFoundException e) {
