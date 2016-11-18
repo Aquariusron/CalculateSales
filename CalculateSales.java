@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class CalculateSales {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		if(args.length != 1){
 			return;
 		}
@@ -138,7 +138,9 @@ public class CalculateSales {
 				return;
 			} finally {
 				try {
-					br.close();
+					if(br != null) {
+						br.close();
+					}
 				} catch(IOException e) {
 					System.out.println("予期せぬエラーが発生しました");
 				}
@@ -193,38 +195,53 @@ public class CalculateSales {
 			}
 	    });
 
+	    FileWriter fwBranchtotal = new FileWriter( new File (args[0], "branch.out"));
+		BufferedWriter bwBranchtotal = new BufferedWriter(fwBranchtotal);
 	    try{
-		    FileWriter fw = new FileWriter( new File (args[0], "branch.out"));
-			BufferedWriter bw = new BufferedWriter(fw);
 			dir.createNewFile();
 		    for(Map.Entry<String,Long> e : compareBranch ) {
-				bw.write(e.getKey() + "," + branch.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
+				bwBranchtotal.write(e.getKey() + "," + branch.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
 		    }
-		    bw.close();
 		} catch (FileNotFoundException f) {
 		    System.out.println("予期せぬエラーが発生しました");
 		    return;
 	    } catch (IOException f) {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
+	    } finally {
+	    	try {
+	    		if(br != null) {
+	    			bwBranchtotal.close();
+	    		}
+	    	} catch(IOException e) {
+	    		System.out.println("予期せぬエラーが発生しました");
+	    	}
+
 	    }
 
 
+	    FileWriter fwCommodity = new FileWriter( new File (args[0], "commodity.out"));
+		BufferedWriter bwCommodity = new BufferedWriter(fwCommodity);
 	    try{
-		    FileWriter fw = new FileWriter( new File (args[0], "commodity.out"));
-			BufferedWriter bw = new BufferedWriter(fw);
 			dir.createNewFile();
-
 			for(Map.Entry<String,Long> e : compareCommodity ) {
-				bw.write(e.getKey() + "," + commodity.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
+				bwCommodity.write(e.getKey() + "," + commodity.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
 			}
-		    bw.close();
 		} catch (FileNotFoundException f) {
 		    System.out.println("予期せぬエラーが発生しました");
 		    return;
 	    } catch (IOException f) {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
+	    } finally {
+	    	try {
+	    		if(br != null) {
+	    			bwCommodity.close();
+	    		}
+	    	} catch(IOException e) {
+	    		System.out.println("予期せぬエラーが発生しました");
+	    	}
+
 	    }
 
 
