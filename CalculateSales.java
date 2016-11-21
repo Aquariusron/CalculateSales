@@ -29,9 +29,9 @@ public class CalculateSales {
 
 //		メソッド1の呼び出し
 
-		String fileName = args[0] + File.separator + "branch.lst";
+//		String fileName = args[0] + File.separator ;
 
-		if(!checkAndput(fileName, "支店", "^\\d{3}", branch, branchSales)){
+		if(!checkAndput("branch.lst", "支店", "^\\d{3}", branch, branchSales)){
 			return;
 		}
 		if(!checkAndput("commodity.lst", "商品", "[0-9 A-Z  a-z]{8}", commodity, commoditySales)){
@@ -192,8 +192,8 @@ public class CalculateSales {
 	    });
 
 	    String args = "C:\\pleiades\\workspace\\売り上げ集計システム";
-	    File file = new File(args, mapPath );
-		String filePath = args + File.separator + mapPath;
+//	    File file = new File(args, mapPath );
+//		String filePath = args + File.separator + mapPath;
 		File dir = new File(args);
 		BufferedWriter bwtotal = null;
 
