@@ -142,24 +142,27 @@ public class CalculateSales {
 
 		File f = new File(mainPath);
 		BufferedReader br = null;
+		if(!f.exists()){
+			System.out.println(chooseEroor + "定義ファイルが存在しません");
+			return false;
+		}
 
 		try {
 			FileReader fr = new FileReader(f);
 			br = new BufferedReader(fr);
 			String line = "";
+
+
 			while((line = br.readLine()) != null) {
 				String[] code = line.split(",");
 
-				if(!f.exists()){
-					System.out.println(chooseEroor+"定義ファイルが存在しません");
-					return false;
-				}
-				if(!(code.length == 2)) {
-					System.out.println(chooseEroor+"定義ファイルのフォーマットが不正です");
+
+				if(code.length != 2) {
+					System.out.println(chooseEroor + "定義ファイルのフォーマットが不正です");
 					return false;
 				}
 				if(!code[0].matches(chooseException)) {
-					System.out.println(chooseEroor+"定義ファイルのフォーマットが不正です");
+					System.out.println(chooseEroor + "定義ファイルのフォーマットが不正です");
 					return false;
 				}
 
@@ -184,10 +187,10 @@ public class CalculateSales {
 
 
 //メソッド2
-	public static boolean output(HashMap<String, Long> mapName,String fileName,
+	public static boolean output(HashMap<String, Long> salesMap,String fileName,
 		HashMap<String, String> firstMap, String path){
 
-		List<Map.Entry<String,Long>> listName = new ArrayList<Map.Entry<String,Long>>(mapName.entrySet());
+		List<Map.Entry<String,Long>> listName = new ArrayList<Map.Entry<String,Long>>(salesMap.entrySet());
 		Collections.sort(listName, new Comparator<Map.Entry<String,Long>>() {
 		    	public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
 		    		return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
@@ -195,16 +198,14 @@ public class CalculateSales {
 	    });
 
 
-		File dir = new File(path);
-		BufferedWriter bwtotal = null;
+		BufferedWriter bw = null;
 
 		try{
-			dir.createNewFile();
-			FileWriter fwtotal = new FileWriter( new File (path, fileName));
-			bwtotal = new BufferedWriter(fwtotal);
+			FileWriter fw = new FileWriter( new File (path, fileName));
+			bw = new BufferedWriter(fw);
 
 		    for(Map.Entry<String,Long> e : listName) {
-				bwtotal.write(e.getKey() + "," + firstMap.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
+				bw.write(e.getKey() + "," + firstMap.get(e.getKey()) + "," + e.getValue() + System.getProperty("line.separator"));
 		    }
 		} catch (FileNotFoundException f) {
 		    System.out.println("予期せぬエラーが発生しました");
@@ -214,8 +215,8 @@ public class CalculateSales {
 			return false;
 	    } finally {
 	    	try {
-	    		if(bwtotal != null) {
-	    			bwtotal.close();
+	    		if(bw != null) {
+	    			bw.close();
 	    		}
 	    	} catch(IOException e) {
 	    		System.out.println("予期せぬエラーが発生しました");
