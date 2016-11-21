@@ -34,7 +34,7 @@ public class CalculateSales {
 		if(!checkAndput(args[0] + File.separator + "branch.lst", "支店", "^\\d{3}", branch, branchSales)){
 			return;
 		}
-		if(!checkAndput("commodity.lst", "商品", "[0-9 A-Z  a-z]{8}", commodity, commoditySales)){
+		if(!checkAndput(args[0] + File.separator + "commodity.lst", "商品", "[0-9 A-Z  a-z]{8}", commodity, commoditySales)){
 			return;
 		}
 
