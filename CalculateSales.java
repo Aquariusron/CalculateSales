@@ -31,7 +31,7 @@ public class CalculateSales {
 
 //		String fileName = args[0] + File.separator ;
 
-		if(!checkAndput("branch.lst", "支店", "^\\d{3}", branch, branchSales)){
+		if(!checkAndput(args[0] + File.separator + "branch.lst", "支店", "^\\d{3}", branch, branchSales)){
 			return;
 		}
 		if(!checkAndput("commodity.lst", "商品", "[0-9 A-Z  a-z]{8}", commodity, commoditySales)){
@@ -125,10 +125,10 @@ public class CalculateSales {
 
 //		メソッド2の呼び出し
 
-		if(!fileWriter(branchSales, "branch.out", branch, "blanch.lst")){
+		if(!output(branchSales, "branch.out", branch, args[0])){
 			return;
 		}
-		if(!fileWriter(commoditySales, "commodity.out", commodity, "commodity.lst")){
+		if(!output(commoditySales, "commodity.out", commodity, args[0])){
 			return;
 		}
 
@@ -137,10 +137,12 @@ public class CalculateSales {
 
 
 //メソッド1
-	public static boolean checkAndput(String branchOrcommodity, String chooseEroor,
+	public static boolean checkAndput(String mainPath, String chooseEroor,
 			 String chooseException, HashMap<String, String> mapName, HashMap<String, Long> salesMap){
-		File f = new File(branchOrcommodity);
+
+		File f = new File(mainPath);
 		BufferedReader br = null;
+
 		try {
 			FileReader fr = new FileReader(f);
 			br = new BufferedReader(fr);
@@ -182,8 +184,9 @@ public class CalculateSales {
 
 
 //メソッド2
-	public static boolean fileWriter(HashMap<String, Long> mapName,String fileName,
-		HashMap<String, String> firstMap, String mapPath){
+	public static boolean output(HashMap<String, Long> mapName,String fileName,
+		HashMap<String, String> firstMap, String path){
+
 		List<Map.Entry<String,Long>> listName = new ArrayList<Map.Entry<String,Long>>(mapName.entrySet());
 		Collections.sort(listName, new Comparator<Map.Entry<String,Long>>() {
 		    	public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
@@ -191,15 +194,13 @@ public class CalculateSales {
 			}
 	    });
 
-	    String args = "C:\\pleiades\\workspace\\売り上げ集計システム";
-//	    File file = new File(args, mapPath );
-//		String filePath = args + File.separator + mapPath;
-		File dir = new File(args);
+
+		File dir = new File(path);
 		BufferedWriter bwtotal = null;
 
 		try{
 			dir.createNewFile();
-			FileWriter fwtotal = new FileWriter( new File (args, fileName));
+			FileWriter fwtotal = new FileWriter( new File (path, fileName));
 			bwtotal = new BufferedWriter(fwtotal);
 
 		    for(Map.Entry<String,Long> e : listName) {
