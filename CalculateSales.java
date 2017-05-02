@@ -27,8 +27,9 @@ public class CalculateSales {
 		HashMap<String, String> commodityName = new HashMap<String, String>();
 		HashMap<String, Long> branchSales = new HashMap<String, Long>();
 		HashMap<String, Long> commoditySales = new HashMap<String, Long>();
-
-		if(!checkAndPut(args[0] + File.separator + "branch.lst", "支店", "^\\d{3}", branchName, branchSales)){
+		
+		// 正規表現　頭と末尾から3桁の数字かどうかを判断する
+		if(!checkAndPut(args[0] + File.separator + "branch.lst", "支店", "^\\d{3}$", branchName, branchSales)){
 			return;
 		}
 		if(!checkAndPut(args[0] + File.separator + "commodity.lst", "商品", "[0-9 A-Z  a-z]{8}", commodityName, commoditySales)){
