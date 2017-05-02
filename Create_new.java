@@ -13,8 +13,7 @@ public class Caluculate_Sales {
 
 		HashMap<String,String> branchLists = new HashMap<String,String>();
 		HashMap<String,String> commodityLists = new HashMap<String,String>();
-		// TODO 自動生成されたメソッド・スタブ
-
+		
 		// コマンドライン引数が1つ以上もしくは以下だったとき
 		if(args.length != 1) {
 			System.out.println("予期せぬエラーが発生しました");
